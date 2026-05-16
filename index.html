@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+    <title>Mohamed Ashraf | Dashboard</title>
+
+    <style>
+        *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+:root{
+    --bg:#0b1120;
+    --card:#111827cc;
+    --border:#1f2937;
+    --primary:#38bdf8;
+    --secondary:#818cf8;
+    --text:#f8fafc;
+    --muted:#94a3b8;
+}
+
+html{
+    scroll-behavior:smooth;
+}
+
+body{
+    min-height:100vh;
+    padding:40px 25px;
+    color:var(--text);
+    font-family:'Inter',sans-serif;
+    background:
+    radial-gradient(circle at top left,#1e3a8a33,transparent 30%),
+    radial-gradient(circle at bottom right,#7c3aed33,transparent 30%),
+    linear-gradient(135deg,#020617,#0f172a);
+}
+
+section{
+    margin-bottom:35px;
+}
+
+.card{
+    position:relative;
+    overflow:hidden;
+    background:var(--card);
+    border:1px solid rgba(255,255,255,.08);
+    border-radius:28px;
+    padding:28px;
+    backdrop-filter:blur(16px);
+    box-shadow:
+    0 10px 30px rgba(0,0,0,.35),
+    inset 0 1px 0 rgba(255,255,255,.04);
+    transition:.35s ease;
+}
+
+.card:hover{
+    transform:translateY(-6px);
+    border-color:#38bdf855;
+    box-shadow:
+    0 20px 40px rgba(0,0,0,.45),
+    0 0 20px rgba(56,189,248,.15);
+}
+
+.card::before{
+    content:'';
+    position:absolute;
+    inset:0;
+    background:
+    linear-gradient(
+    120deg,
+    transparent,
+    rgba(255,255,255,.04),
+    transparent);
+    pointer-events:none;
+}
+
+h2,
+#site2 .title{
+    font-size:1.5rem;
+    margin-bottom:24px;
+    font-weight:700;
+    letter-spacing:.5px;
+    color:white;
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+h2::before,
+#site2 .title::before{
+    content:'';
+    width:6px;
+    height:28px;
+    border-radius:999px;
+    background:linear-gradient(to bottom,var(--primary),var(--secondary));
+}
+
+#site1 .container,
+#site3 .container{
+    max-width:1250px;
+    margin:auto;
+}
+
+.palette{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:20px;
+}
+
+.color-box{
+    aspect-ratio:1/.8;
+    border-radius:22px;
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    padding:18px;
+    font-weight:700;
+    letter-spacing:1px;
+    cursor:pointer;
+    transition:.3s ease;
+    border:1px solid rgba(255,255,255,.2);
+    box-shadow:0 10px 25px rgba(0,0,0,.25);
+}
+
+.color-box:hover{
+    transform:translateY(-8px) scale(1.03);
+}
+
+.table-box{
+    overflow:auto;
+    border-radius:22px;
+    border:1px solid rgba(255,255,255,.08);
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+thead{
+    background:linear-gradient(90deg,#0f172a,#1e293b);
+}
+
+th{
+    padding:18px;
+    text-align:left;
+    color:#cbd5e1;
+    font-size:.85rem;
+    text-transform:uppercase;
+    letter-spacing:1px;
+}
+
+td{
+    padding:18px;
+    border-top:1px solid rgba(255,255,255,.06);
+    color:#e2e8f0;
+}
+
+tbody tr{
+    transition:.25s ease;
+}
+
+tbody tr:hover{
+    background:rgba(255,255,255,.04);
+}
+
+.active,
+.pending,
+.inactive{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    padding:7px 14px;
+    border-radius:999px;
+    font-size:.8rem;
+    font-weight:700;
+}
+
+.active{
+    background:#22c55e22;
+    color:#4ade80;
+}
+
+.pending{
+    background:#f59e0b22;
+    color:#fbbf24;
+}
+
+.inactive{
+    background:#ef444422;
+    color:#f87171;
+}
+
+.preview{
+    background:#0f172a99;
+    border:1px solid rgba(255,255,255,.05);
+    border-radius:22px;
+    padding:20px;
+}
+
+#taskInput{
+    width:100%;
+    border:none;
+    outline:none;
+    padding:18px;
+    border-radius:18px;
+    background:#1e293b;
+    color:white;
+    font-size:1rem;
+    transition:.3s ease;
+}
+
+#taskInput:focus{
+    box-shadow:0 0 0 4px rgba(56,189,248,.2);
+}
+
+#taskInput::placeholder{
+    color:#94a3b8;
+}
+
+#taskList{
+    margin-top:20px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+.task-item{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px;
+    border-radius:18px;
+    background:#111827;
+    border:1px solid rgba(255,255,255,.06);
+    transition:.3s ease;
+}
+
+.task-item:hover{
+    transform:translateX(5px);
+    border-color:#38bdf855;
+}
+
+.actions{
+    display:flex;
+    gap:10px;
+}
+
+.actions button{
+    border:none;
+    cursor:pointer;
+    padding:10px 18px;
+    border-radius:14px;
+    font-weight:600;
+    transition:.25s ease;
+}
+
+.actions button:first-child{
+    background:#0ea5e9;
+    color:white;
+}
+
+.actions button:first-child:hover{
+    transform:scale(.96);
+}
+
+.actions button:last-child{
+    background:#ef4444;
+    color:white;
+}
+
+.actions button:last-child:hover{
+    transform:scale(.96);
+}
+
+::-webkit-scrollbar{
+    width:8px;
+}
+
+::-webkit-scrollbar-thumb{
+    background:#334155;
+    border-radius:20px;
+}
+
+@media(max-width:768px){
+
+    body{
+        padding:20px;
+    }
+
+    .card{
+        padding:20px;
+    }
+
+    h2,
+    #site2 .title{
+        font-size:1.2rem;
+    }
+
+    th,
+    td{
+        padding:14px;
+    }
+
+    .task-item{
+        flex-direction:column;
+        align-items:flex-start;
+        gap:15px;
+    }
+
+}
+    </style>
+</head>
+<body>
+
+    <section id="site1">
+        <div class="container">
+            <div class="right" style="grid-column: 1 / span 2;">
+                <div class="card cyan">
+                    <h2>Color Palette Preview</h2>
+                    <div class="palette" id="palette"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="site2">
+        <div class="card">
+            <div class="title">Generated Table Preview</div>
+            <div class="table-box">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Role</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="site3">
+        <div class="container">
+            <div class="card cyan" style="grid-column: 1 / span 3;">
+                <h2>Smart Tasks</h2>
+                <div class="preview">
+                    <input type="text" id="taskInput" placeholder="Enter new task... (press Enter)" />
+                    <div id="taskList"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+  function getRandomColor() {
+    const r = Math.floor(Math.random() * 256);
+    const g = Math.floor(Math.random() * 256);
+    const b = Math.floor(Math.random() * 256);
+    return '#' + [r, g, b].map(x => x.toString(16).padStart(2, '0')).join('').toUpperCase();
+  }
+
+  function copyColor(color) {
+    navigator.clipboard.writeText(color);
+    alert('🎨 Color copied!');
+  }
+
+  function createPalette() {
+    const palette = document.getElementById('palette');
+    palette.innerHTML = '';
+
+    for (let i = 0; i < 5; i++) {
+      const color = getRandomColor();
+      const box = document.createElement('div');
+      box.className = 'color-box';
+      box.style.background = color;
+      box.textContent = color.replace('#', '');
+      box.addEventListener('click', () => copyColor(color));
+      palette.appendChild(box);
+    }
+  }
+
+  createPalette();
+
+  const data = [
+    { id: 1, name: 'John Doe', role: 'Developer', status: 'Active' },
+    { id: 2, name: 'Jane Smith', role: 'Designer', status: 'Pending' },
+    { id: 3, name: 'Bob Johnson', role: 'Manager', status: 'Active' },
+    { id: 4, name: 'Alice Brown', role: 'QA Engineer', status: 'Inactive' }
+  ];
+
+  const tableBody = document.getElementById('table-body');
+
+  data.forEach(item => {
+    const row = document.createElement('tr');
+    row.innerHTML = `
+      <td>${item.id}</td>
+      <td>${item.name}</td>
+      <td>${item.role}</td>
+      <td class="${item.status.toLowerCase()}">${item.status}</td>
+    `;
+    tableBody.appendChild(row);
+  });
+
+  const input = document.getElementById('taskInput');
+  const list = document.getElementById('taskList');
+
+  let tasks = [
+    { id: 1, text: 'Buy groceries' },
+    { id: 2, text: 'Walk the dog' },
+    { id: 3, text: 'Read book' }
+  ];
+
+  function renderTasks() {
+    list.innerHTML = '';
+    tasks.forEach(task => {
+      const div = document.createElement('div');
+      div.className = 'task-item';
+      div.innerHTML = `
+        <span>${task.text}</span>
+        <div class="actions">
+          <button onclick="editTask(${task.id})">Edit</button>
+          <button onclick="deleteTask(${task.id})">Delete</button>
+        </div>
+      `;
+      list.appendChild(div);
+    });
+  }
+
+  function addTask() {
+    if (!input.value.trim()) return;
+    const task = {
+      id: Date.now(),
+      text: input.value
+    };
+    tasks.push(task);
+    input.value = '';
+    renderTasks();
+  }
+
+  function editTask(id) {
+    const task = tasks.find(t => t.id === id);
+    const newText = prompt('Edit your task:', task.text);
+    if (newText !== null && newText.trim()) {
+      tasks = tasks.map(task =>
+        task.id === id ? { ...task, text: newText } : task
+      );
+      renderTasks();
+    }
+  }
+
+  function deleteTask(id) {
+    tasks = tasks.filter(task => task.id !== id);
+    renderTasks();
+  }
+
+  input.addEventListener('keydown', e => {
+    if (e.key === 'Enter') addTask();
+  });
+
+  renderTasks();
+    </script>
+
+</body>
+</html>
